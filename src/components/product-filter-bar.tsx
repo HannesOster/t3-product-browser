@@ -11,7 +11,7 @@ import {
 } from "./ui/select";
 //TODO: Categories auch mit value und label versehen
 const categories = [
-  "Keine",
+  "Keine Kategorie",
   "Smartphones",
   "Headphones",
   "Smartphone Accessories",

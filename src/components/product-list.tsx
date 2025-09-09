@@ -15,7 +15,7 @@ export function ProductList() {
       p.name.toLowerCase().includes(search.toLowerCase()),
     );
   }
-  if (category && category !== "Keine") {
+  if (category && category !== "Keine Kategorie") {
     filtered = filtered.filter((p) => p.category === category);
   }
   if (sort === "price-asc") {
