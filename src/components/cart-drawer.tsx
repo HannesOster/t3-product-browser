@@ -51,7 +51,7 @@ export function CartDrawer({
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-7 w-7"
+                      className="h-7 w-7 cursor-pointer"
                       onClick={() =>
                         update(
                           item.product.id,
@@ -71,7 +71,7 @@ export function CartDrawer({
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-7 w-7"
+                      className="h-7 w-7 cursor-pointer"
                       onClick={() =>
                         update(
                           item.product.id,
@@ -85,7 +85,7 @@ export function CartDrawer({
                     <Button
                       size="icon"
                       variant="destructive"
-                      className="h-7 w-7"
+                      className="h-7 w-7 cursor-pointer"
                       onClick={() => remove(item.product.id)}
                       aria-label="Entfernen"
                     >

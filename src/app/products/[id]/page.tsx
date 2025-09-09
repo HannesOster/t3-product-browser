@@ -25,6 +25,7 @@ export default function ProductDetailPage() {
   return (
     <div className="mx-auto max-w-xl py-8">
       <Button
+        className="cursor-pointer"
         variant="outline"
         onClick={() => {
           if (window.history.length > 1) {
@@ -49,7 +50,7 @@ export default function ProductDetailPage() {
         <div className="text-muted-foreground">{product.category}</div>
         <div className="text-xl font-semibold">${product.price.toFixed(2)}</div>
         <Button
-          className="mt-4"
+          className="mt-4 cursor-pointer"
           onClick={() => {
             add(product);
           }}
