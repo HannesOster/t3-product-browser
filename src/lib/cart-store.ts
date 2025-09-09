@@ -21,12 +21,10 @@ export const useCart = create<CartState>(
     items: [],
     add: (product: Product, qty: number = product.quantityIncrement): void =>
       set((state: CartState): Partial<CartState> => {
-        const existing = state.items.find(
-          (i: CartItem) => i.product.id === product.id,
-        );
+        const existing = state.items.find((i) => i.product.id === product.id);
         if (existing) {
           return {
-            items: state.items.map((i: CartItem) =>
+            items: state.items.map((i) =>
               i.product.id === product.id
                 ? { ...i, quantity: i.quantity + qty }
                 : i,
@@ -38,7 +36,7 @@ export const useCart = create<CartState>(
     remove: (id: string): void =>
       set(
         (state: CartState): Partial<CartState> => ({
-          items: state.items.filter((i: CartItem) => i.product.id !== id),
+          items: state.items.filter((i) => i.product.id !== id),
         }),
       ),
     update: (id: string, qty: number) => {
