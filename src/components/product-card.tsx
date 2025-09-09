@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardContent>
       <CardFooter>
         <Button
-          className="w-full"
+          className="w-full cursor-pointer"
           onClick={() => {
             add(product);
           }}
