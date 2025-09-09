@@ -7,6 +7,7 @@ import {
 } from "~/components/ui/sheet";
 import { Button } from "~/components/ui/button";
 import { useCart } from "~/lib/cart-store";
+import Link from "next/link";
 
 export function CartDrawer({
   open,
@@ -104,7 +105,7 @@ export function CartDrawer({
               <span className="text-lg font-bold">${total.toFixed(2)}</span>
             </div>
             <Button asChild className="mt-2 w-full">
-              <a href="/checkout">Zur Kasse</a>
+              <Link href="/checkout">Zur Kasse</Link>
             </Button>
           </div>
         </SheetFooter>

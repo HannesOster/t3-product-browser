@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
       <p className="mb-8 text-lg">
         Entdecken Sie unsere Sammlung erstaunlicher Produkte!
       </p>
-      <Link href="/products">Produkte</Link>
+      <Button asChild>
+        <Link href="/products">Produkte</Link>
+      </Button>
     </main>
   );
 }
