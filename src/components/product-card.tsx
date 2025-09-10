@@ -22,7 +22,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const add = useCart((s) => s.add as (product: Product) => void);
 
   return (
-    <Card className="grid max-h-[344px]">
+    <Card className="max-h-[344px]">
       <Link href={`/products/${product.id}`} tabIndex={-1}>
         <CardHeader className="p-0">
           <Image
