@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import type { Product } from "./products";
-
+import type { Product } from "@prisma/client";
 type CartItem = {
   product: Product;
   quantity: number;
