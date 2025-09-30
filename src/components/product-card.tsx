@@ -9,14 +9,13 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-
 import Image from "next/image";
 import { useCart } from "~/lib/cart-store";
-import type { Product } from "~/lib/products";
+import type { Product } from "@prisma/client";
 
-type ProductCardProps = {
+interface ProductCardProps {
   product: Product;
-};
+}
 
 export function ProductCard({ product }: ProductCardProps) {
   const add = useCart((s) => s.add as (product: Product) => void);

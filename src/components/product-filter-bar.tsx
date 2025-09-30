@@ -9,13 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-//TODO: Categories auch mit value und label versehen
+
+// Kategorien mit "none" als Platzhalter
 const categories = [
-  "Keine Kategorie",
-  "Smartphones",
-  "Headphones",
-  "Smartphone Accessories",
+  { value: "none", label: "Keine Kategorie" },
+  { value: "Smartphones", label: "Smartphones" },
+  { value: "Headphones", label: "Headphones" },
+  { value: "Smartphone Accessories", label: "Smartphone Accessories" },
 ];
+
+// Sortieroptionen mit "none" als Platzhalter
 const sortOptions = [
   { value: "none", label: "Keine Sortierung" },
   { value: "price-asc", label: "Preis aufsteigend" },
@@ -24,14 +27,13 @@ const sortOptions = [
 
 export function ProductFilterBar() {
   const [filters, setFilters] = useQueryFilter();
-
-  const { search, category, sort } = filters;
+  const { search, category = "none", sort = "none" } = filters;
 
   const reset = () => {
     void setFilters({
       search: "",
-      category: "",
-      sort: "",
+      category: "none",
+      sort: "none",
     });
   };
 
@@ -40,38 +42,34 @@ export function ProductFilterBar() {
       className="mb-4 flex flex-wrap items-center gap-2"
       onSubmit={(e) => e.preventDefault()}
     >
+      {/* Suche */}
       <Input
         type="search"
         placeholder="Suche..."
         value={search ?? ""}
-        onChange={(e) => {
-          void setFilters({ search: e.target.value || "" });
-        }}
+        onChange={(e) => void setFilters({ search: e.target.value || "" })}
         className="w-40"
       />
+
+      {/* Kategorie */}
       <Select
         value={category}
-        onValueChange={(v) => {
-          void setFilters({ category: v });
-        }}
+        onValueChange={(v) => void setFilters({ category: v })}
       >
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Kategorie" />
         </SelectTrigger>
         <SelectContent>
           {categories.map((cat) => (
-            <SelectItem key={cat} value={cat}>
-              {cat}
+            <SelectItem key={cat.value} value={cat.value}>
+              {cat.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      <Select
-        value={sort}
-        onValueChange={(v) => {
-          void setFilters({ sort: v });
-        }}
-      >
+
+      {/* Sortierung */}
+      <Select value={sort} onValueChange={(v) => void setFilters({ sort: v })}>
         <SelectTrigger className="w-44">
           <SelectValue placeholder="Sortierung" />
         </SelectTrigger>
@@ -83,6 +81,7 @@ export function ProductFilterBar() {
           ))}
         </SelectContent>
       </Select>
+
       <Button type="button" variant="outline" onClick={reset}>
         Reset
       </Button>

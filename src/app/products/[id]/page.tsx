@@ -1,22 +1,37 @@
 "use client";
+
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { products } from "~/lib/products";
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import { useCart } from "~/lib/cart-store";
 import { ChevronLeft } from "lucide-react";
+import { api, type RouterOutputs } from "~/trpc/react";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const product = products.find((p) => p.id === id);
+
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = api.products.get.useQuery(id ?? "");
   const add = useCart(
-    (s: { add: (product: (typeof products)[number]) => void }) => s.add,
+    (s: { add: (product: RouterOutputs["products"]["get"]) => void }) => s.add,
   );
 
-  if (!product) {
+  // Produkt laden oder Fehler
+  if (isLoading) {
+    return (
+      <div className="text-muted-foreground py-12 text-center">
+        Lade Produkt...
+      </div>
+    );
+  }
+
+  if (!product || error) {
     const query = searchParams?.toString();
     router.replace(`/products${query ? `?${query}` : ""}`);
     return null;
@@ -38,6 +53,7 @@ export default function ProductDetailPage() {
         <ChevronLeft />
         Zurück zur Liste
       </Button>
+
       <div className="bg-card mt-6 flex flex-col gap-4 rounded-lg p-6 shadow">
         <Image
           src={product.imageUrl || "/placeholder.png"}
@@ -49,12 +65,7 @@ export default function ProductDetailPage() {
         <h2 className="text-2xl font-bold">{product.name}</h2>
         <div className="text-muted-foreground">{product.category}</div>
         <div className="text-xl font-semibold">${product.price.toFixed(2)}</div>
-        <Button
-          className="mt-4 cursor-pointer"
-          onClick={() => {
-            add(product);
-          }}
-        >
+        <Button className="mt-4 cursor-pointer" onClick={() => add(product)}>
           In den Warenkorb
         </Button>
       </div>
