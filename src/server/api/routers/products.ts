@@ -65,6 +65,29 @@ export const productsRouter = t.router({
 
     return product;
   }),
+  create: t.procedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+        description: z.string().min(1),
+        price: z.number().min(0),
+        category: z.string().min(1),
+        imageUrl: z.string().url(),
+        quantityIncrement: z.number().min(1).default(1),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const product = await prisma.product.create({
+        data: input,
+      });
+      return product;
+    }),
+  delete: t.procedure.input(z.string()).mutation(async ({ input: id }) => {
+    await prisma.product.delete({
+      where: { id },
+    });
+    return { success: true };
+  }),
 });
 
 export type AppRouter = typeof productsRouter;

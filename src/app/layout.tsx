@@ -1,6 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "~/trpc/react";
@@ -23,15 +24,17 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <NuqsAdapter>
-      <html lang="en" className={`${geist.variable}`}>
-        <body>
-          <Header />
-          <TRPCReactProvider>
-            {children}
-            <Toaster />
-          </TRPCReactProvider>
-        </body>
-      </html>
+      <ClerkProvider>
+        <html lang="en" className={`${geist.variable}`}>
+          <body>
+            <Header />
+            <TRPCReactProvider>
+              {children}
+              <Toaster />
+            </TRPCReactProvider>
+          </body>
+        </html>
+      </ClerkProvider>
     </NuqsAdapter>
   );
 }

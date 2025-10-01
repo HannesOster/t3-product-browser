@@ -24,6 +24,7 @@
     "seed": "tsx prisma/prisma.seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.33.1",
     "@faker-js/faker": "^10.0.0",
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-dialog": "^1.1.15",
