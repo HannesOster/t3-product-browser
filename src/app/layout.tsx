@@ -5,6 +5,7 @@ import { Geist } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "~/components/header";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Product Browser",
@@ -25,7 +26,10 @@ export default function RootLayout({
       <html lang="en" className={`${geist.variable}`}>
         <body>
           <Header />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            {children}
+            <Toaster />
+          </TRPCReactProvider>
         </body>
       </html>
     </NuqsAdapter>
