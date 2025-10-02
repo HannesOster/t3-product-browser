@@ -24,8 +24,8 @@ export const productsRouter = t.router({
       if (search) {
         where.name = { contains: search, mode: "insensitive" };
       }
-      if (category) {
-        where.category = category;
+      if (category && category !== "none") {
+        where.categoryId = category;
       }
 
       // Sortierung
@@ -42,12 +42,17 @@ export const productsRouter = t.router({
           orderBy,
           skip,
           take: pageSize,
+          include: { category: true },
         }),
         prisma.product.count({ where }),
       ]);
 
+      // Return category name in items
       return {
-        items,
+        items: items.map((item) => ({
+          ...item,
+          category: item.category?.name ?? "Keine Kategorie",
+        })),
         page,
         pageCount: Math.ceil(total / pageSize),
         total,
@@ -57,13 +62,17 @@ export const productsRouter = t.router({
   get: t.procedure.input(z.string()).query(async ({ input: id }) => {
     const product = await prisma.product.findUnique({
       where: { id },
+      include: { category: true },
     });
 
     if (!product) {
       throw new Error("Not found");
     }
 
-    return product;
+    return {
+      ...product,
+      category: product.category?.name,
+    };
   }),
   create: t.procedure
     .input(
@@ -71,16 +80,43 @@ export const productsRouter = t.router({
         name: z.string().min(1),
         description: z.string().min(1),
         price: z.number().min(0),
-        category: z.string().min(1),
+        category: z.string().min(1), // categoryId
         imageUrl: z.string().url(),
         quantityIncrement: z.number().min(1).default(1),
       }),
     )
     .mutation(async ({ input }) => {
       const product = await prisma.product.create({
-        data: input,
+        data: {
+          name: input.name,
+          description: input.description,
+          price: input.price,
+          categoryId: input.category,
+          imageUrl: input.imageUrl,
+          quantityIncrement: input.quantityIncrement,
+        },
       });
       return product;
+    }),
+  // Get all categories
+  getCategories: t.procedure.query(async () => {
+    const categories = await prisma.category.findMany();
+    return { categories };
+  }),
+  // Create category endpoint
+  createCategory: t.procedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const category = await prisma.category.create({
+        data: {
+          name: input.name,
+        },
+      });
+      return { category };
     }),
   delete: t.procedure.input(z.string()).mutation(async ({ input: id }) => {
     await prisma.product.delete({

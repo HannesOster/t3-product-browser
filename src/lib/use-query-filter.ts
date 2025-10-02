@@ -3,7 +3,7 @@ import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 export default function useQueryFilter() {
   return useQueryStates({
     search: parseAsString.withDefault(""),
-    category: parseAsString.withDefault("Keine Kategorie"),
+    category: parseAsString.withDefault("none"),
     sort: parseAsString.withDefault("price-asc"),
     page: parseAsInteger.withDefault(1),
   });

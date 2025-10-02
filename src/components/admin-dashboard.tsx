@@ -13,6 +13,7 @@ import {
   TableCell,
   TableHead,
 } from "~/components/ui/table";
+import type { Category } from "@prisma/client";
 
 export default function AdminDashboard() {
   const [filters] = useQueryFilter();
@@ -37,8 +38,11 @@ export default function AdminDashboard() {
     name: "",
     description: "",
     price: 0,
-    category: "",
+    categoryId: "",
   });
+
+  // Load categories for select
+  const { data: categories } = api.products.getCategories.useQuery();
 
   return (
     <div>
@@ -47,11 +51,14 @@ export default function AdminDashboard() {
         onSubmit={(e) => {
           e.preventDefault();
           createProduct.mutate({
-            ...form,
+            name: form.name,
+            description: form.description,
+            price: form.price,
+            category: form.categoryId,
             imageUrl: `https://picsum.photos/400/240?random=${Math.random()}`,
             quantityIncrement: 1,
           });
-          setForm({ name: "", description: "", price: 0, category: "" });
+          setForm({ name: "", description: "", price: 0, categoryId: "" });
         }}
         className="mb-6 flex gap-2"
       >
@@ -78,12 +85,22 @@ export default function AdminDashboard() {
           placeholder="Price"
           required
         />
-        <input
-          value={form.category}
-          onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-          placeholder="Category"
+        <select
+          value={form.categoryId}
+          onChange={(e) =>
+            setForm((f) => ({ ...f, categoryId: e.target.value }))
+          }
           required
-        />
+        >
+          <option value="" disabled>
+            Kategorie wählen
+          </option>
+          {categories?.categories.map((cat: Category) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
         <Button type="submit">Add Product</Button>
       </form>
       <ProductFilterBar />

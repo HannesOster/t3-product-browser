@@ -10,11 +10,20 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
- model Product {
-   id               String  @id @default(uuid()) @map("_id")
-   name             String
+
+model Category {
+  id    String @id @default(uuid()) @map("_id")
+  name  String
+  products Product[]
+}
+
+model Product {
+  id               String  @id @default(uuid()) @map("_id")
+  name             String
+  description      String
   price            Float
-   category         String
-   quantityIncrement Int
-   imageUrl         String
- }
+  quantityIncrement Int
+  imageUrl         String
+  categoryId       String
+  category         Category @relation(fields: [categoryId], references: [id])
+}
