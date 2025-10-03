@@ -18,7 +18,7 @@ function CategorySelect({
   const { data, isLoading } = api.products.getCategories.useQuery();
   return (
     <Select value={value} onValueChange={setValue}>
-      <SelectTrigger className="w-40">
+      <SelectTrigger className="w-80">
         <SelectValue placeholder="Kategorie" />
       </SelectTrigger>
       <SelectContent>

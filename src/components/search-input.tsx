@@ -15,7 +15,7 @@ function SearchInput({
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         setValue(e.target.value ?? "")
       }
-      className="w-40"
+      className="w-80"
     />
   );
 }

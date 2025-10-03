@@ -17,9 +17,10 @@ export default function ProductDetailPage() {
     data: product,
     isLoading,
     error,
-  } = api.products.get.useQuery(id ?? "");
+  } = api.products.getById.useQuery(id ?? "");
   const add = useCart(
-    (s: { add: (product: RouterOutputs["products"]["get"]) => void }) => s.add,
+    (s: { add: (product: RouterOutputs["products"]["getById"]) => void }) =>
+      s.add,
   );
 
   // Produkt laden oder Fehler

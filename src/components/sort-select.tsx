@@ -1,10 +1,10 @@
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
-import { SelectItem } from "./ui/select";
+} from "./ui/select";
 
 const sortOptions = [
   { value: "none", label: "Keine Sortierung" },
@@ -21,7 +21,7 @@ function SortSelect({
 }) {
   return (
     <Select value={value} onValueChange={setValue}>
-      <SelectTrigger className="w-44">
+      <SelectTrigger className="w-80">
         <SelectValue placeholder="Sortierung" />
       </SelectTrigger>
       <SelectContent>

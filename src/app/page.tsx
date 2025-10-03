@@ -1,18 +1,13 @@
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { BestsellerSlider } from "~/components/bestseller-slider";
+import { HeroSection } from "~/components/hero-section";
+import { NewsletterForm } from "~/components/newsletter-form";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <h1 className="mb-4 text-4xl font-bold">
-        Willkommen zum Produkt-Browser
-      </h1>
-      <p className="mb-8 text-lg">
-        Entdecken Sie unsere Sammlung erstaunlicher Produkte!
-      </p>
-      <Button asChild>
-        <Link href="/products">Produkte</Link>
-      </Button>
+    <main className="from-primary/10 via-background to-secondary/30 relative flex min-h-screen flex-col items-center justify-start gap-12 overflow-hidden bg-gradient-to-br p-0">
+      <HeroSection />
+      <BestsellerSlider />
+      <NewsletterForm />
     </main>
   );
 }

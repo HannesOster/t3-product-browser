@@ -47,11 +47,10 @@ export const productsRouter = t.router({
         prisma.product.count({ where }),
       ]);
 
-      // Return category name in items
       return {
         items: items.map((item) => ({
           ...item,
-          category: item.category?.name ?? "Keine Kategorie",
+          category: item.category?.name,
         })),
         page,
         pageCount: Math.ceil(total / pageSize),
@@ -59,7 +58,7 @@ export const productsRouter = t.router({
       };
     }),
 
-  get: t.procedure.input(z.string()).query(async ({ input: id }) => {
+  getById: t.procedure.input(z.string()).query(async ({ input: id }) => {
     const product = await prisma.product.findUnique({
       where: { id },
       include: { category: true },

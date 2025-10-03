@@ -11,7 +11,7 @@ export default function Header() {
   const { user } = useUser();
 
   return (
-    <header className="flex items-center justify-between bg-white px-4 py-3 shadow">
+    <header className="sticky top-0 z-50 flex items-center justify-between bg-white px-4 py-3 shadow">
       <h1 className="text-xl font-bold">Product Browser</h1>
       <div className="grid grid-flow-col items-center gap-5">
         {user?.publicMetadata.role === "admin" && (
