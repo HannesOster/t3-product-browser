@@ -22,7 +22,7 @@ import { useState, useEffect } from "react";
 export function PaginationControls({
   page,
   totalPages,
-  windowSize = 10,
+  windowSize = 7,
   isLoading,
 }: PaginationControlsProps) {
   const [activePage, setActivePage] = useState(page);
@@ -42,7 +42,10 @@ export function PaginationControls({
   }
 
   return (
-    <Pagination className="mt-4">
+    <Pagination
+      className="mt-4 w-full max-w-full sm:w-auto sm:max-w-none"
+      style={{ maxWidth: "250px" }}
+    >
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
