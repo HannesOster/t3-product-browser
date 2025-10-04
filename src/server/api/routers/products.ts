@@ -110,9 +110,10 @@ export const productsRouter = t.router({
         name: z.string().min(1),
         description: z.string().min(1),
         price: z.number().min(0),
-        category: z.string().min(1), // categoryId
+        category: z.string().min(1),
         imageUrl: z.string().url(),
         quantityIncrement: z.number().min(1).default(1),
+        bestseller: z.boolean().default(false),
       }),
     )
     .mutation(async ({ input }) => {
@@ -128,12 +129,10 @@ export const productsRouter = t.router({
       });
       return product;
     }),
-  // Get all categories
   getCategories: t.procedure.query(async () => {
     const categories = await prisma.category.findMany();
     return { categories };
   }),
-  // Create category endpoint
   createCategory: t.procedure
     .input(
       z.object({
