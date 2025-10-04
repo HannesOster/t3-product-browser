@@ -35,7 +35,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardHeader>
       </Link>
       <CardContent className="flex-1">
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/product/${product.id}`}>
           <CardTitle className="text-base">{product.name}</CardTitle>
         </Link>
         <p className="text-muted-foreground text-sm">

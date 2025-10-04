@@ -9,13 +9,18 @@ import {
   NavigationMenuContent,
 } from "./ui/navigation-menu";
 import clsx from "clsx";
+import { api, type RouterOutputs } from "~/trpc/react";
 
 const MainNav = () => {
   const pathname = usePathname();
   const { user } = useUser();
 
   const linkClass = (active: boolean) =>
-    clsx("text-sm font-medium", active && "text-blue-600 underline");
+    clsx("text-sm font-medium", active && "bg-accent");
+
+  const { data: categoriesData } = api.products.getCategories.useQuery();
+  const categories: RouterOutputs["products"]["getCategories"]["categories"] =
+    categoriesData?.categories ?? [];
 
   return (
     <NavigationMenu>
@@ -26,12 +31,35 @@ const MainNav = () => {
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            href="/products"
+          <NavigationMenuTrigger
             className={linkClass(pathname.startsWith("/products"))}
           >
             Products
-          </NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[300px] gap-4">
+              <li>
+                <NavigationMenuLink
+                  href="/products"
+                  className={linkClass(pathname === "/products")}
+                >
+                  Alle Produkte
+                </NavigationMenuLink>
+              </li>
+              {categories.map((cat) => (
+                <li key={cat.id}>
+                  <NavigationMenuLink
+                    href={`/products/category/${cat.id}`}
+                    className={linkClass(
+                      pathname === `/products/category/${cat.id}`,
+                    )}
+                  >
+                    {cat.name}
+                  </NavigationMenuLink>
+                </li>
+              ))}
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         {user?.publicMetadata.role === "admin" && (
           <NavigationMenuItem>
@@ -41,7 +69,7 @@ const MainNav = () => {
               Admin
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="flex flex-col gap-2 p-2">
+              <ul className="grid w-[300px] gap-4">
                 <li>
                   <NavigationMenuLink
                     href="/admin"
@@ -62,6 +90,14 @@ const MainNav = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
         )}
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href="/products"
+            className={linkClass(pathname.startsWith("/member"))}
+          >
+            Pro-Membership
+          </NavigationMenuLink>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
