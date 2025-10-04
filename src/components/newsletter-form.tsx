@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 export function NewsletterForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -28,13 +29,15 @@ export function NewsletterForm() {
               setSubmitted(true);
             }}
           >
-            <input
+            <Input
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
               placeholder="Deine E-Mail-Adresse"
-              className="focus:ring-primary rounded border px-4 py-2 text-base shadow focus:ring-2 focus:outline-none"
+              className="w-full"
             />
             <Button type="submit" size="lg" className="w-full">
               Newsletter abonnieren

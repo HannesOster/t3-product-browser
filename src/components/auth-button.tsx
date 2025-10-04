@@ -1,3 +1,4 @@
+import { Button } from "./ui/button";
 import {
   SignedIn,
   SignedOut,
@@ -12,9 +13,9 @@ export default function AuthButton() {
       <SignedOut>
         <SignInButton />
         <SignUpButton>
-          <button className="text-ceramic-white h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium sm:h-12 sm:px-5 sm:text-base">
+          <Button className="h-10 rounded-full px-4 text-sm text-white sm:h-12 sm:px-5 sm:text-base">
             Sign Up
-          </button>
+          </Button>
         </SignUpButton>
       </SignedOut>
       <SignedIn>
