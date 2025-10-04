@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CartButton } from "./cart-button";
 import { CartDrawer } from "./cart-drawer";
 import AuthButton from "./auth-button";
-import { MainNav } from "./main-nav";
+import MainNav from "./main-nav";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
