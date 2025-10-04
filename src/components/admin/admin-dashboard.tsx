@@ -20,34 +20,15 @@ export default function AdminDashboard() {
       pageSize: 12,
     });
 
-  const createProduct = api.products.create.useMutation({
-    onSuccess: () => refetch(),
-  });
-
-  const { data: categories } = api.products.getCategories.useQuery();
-
   return (
     <div className="mx-auto max-w-5xl py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Admin-Bereich</h1>
       </div>
-
       <div className="mb-8 grid gap-6 md:grid-cols-2">
-        <div className="bg-card rounded-lg border p-6 shadow">
+        <div className="bg-card hidden rounded-lg border p-6 shadow sm:block">
           <h2 className="mb-4 text-xl font-semibold">Neues Produkt anlegen</h2>
-          <AdminProductForm
-            categories={categories}
-            onCreate={(form) => {
-              createProduct.mutate({
-                name: form.name,
-                description: form.description,
-                price: form.price,
-                category: form.categoryId,
-                imageUrl: `https://picsum.photos/400/240?random=${Math.random()}`,
-                quantityIncrement: 1,
-              });
-            }}
-          />
+          <AdminProductForm />
         </div>
         <div className="bg-card rounded-lg border p-6 shadow">
           <h2 className="mb-4 text-xl font-semibold">Filter & Suche</h2>

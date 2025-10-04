@@ -1,36 +1,44 @@
+"use client";
 import { useState } from "react";
 import { Input } from "../ui/input";
-import type { Category } from "@prisma/client";
 import { Button } from "../ui/button";
 import { CategorySelect } from "../category-select";
+import { api } from "~/trpc/react";
+import type { Product } from "@prisma/client";
 
-export interface AdminProductFormProps {
-  onCreate: (product: {
-    name: string;
-    description: string;
-    price: number;
-    categoryId: string;
-  }) => void;
-  categories: { categories: Category[] } | undefined;
-}
-
-export function AdminProductForm({ onCreate }: AdminProductFormProps) {
+export function AdminProductForm() {
   const [form, setForm] = useState({
     name: "",
     description: "",
     price: 0,
     categoryId: "",
   });
+  const createProduct = api.products.create.useMutation();
 
+  const handleCreate = (product: Product) => {
+    createProduct.mutate({
+      category: product.categoryId,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      imageUrl: "",
+      quantityIncrement: 1,
+      bestseller: false,
+    });
+  };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onCreate({
+        handleCreate({
           name: form.name,
           description: form.description,
           price: form.price,
           categoryId: form.categoryId,
+          id: "",
+          imageUrl: "",
+          quantityIncrement: 1,
+          bestseller: false,
         });
         setForm({ name: "", description: "", price: 0, categoryId: "" });
       }}

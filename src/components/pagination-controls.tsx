@@ -55,7 +55,7 @@ export function PaginationControls({
         </PaginationItem>
 
         {isLoading
-          ? Array.from({ length: 10 }, (_, i) => (
+          ? Array.from({ length: 7 }, (_, i) => (
               <PaginationItem key={i}>
                 <div className="mx-auto h-9 w-9 animate-pulse rounded bg-gray-200" />
               </PaginationItem>
