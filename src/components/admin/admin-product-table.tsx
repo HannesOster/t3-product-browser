@@ -7,7 +7,9 @@ import {
   TableHead,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton"; // Import Skeleton component
+import { Skeleton } from "../ui/skeleton";
+import { api } from "~/trpc/react";
+import { BestsellerSwitch } from "./bestseller-switch";
 
 export interface AdminProductTableProps {
   items: Array<{
@@ -15,23 +17,28 @@ export interface AdminProductTableProps {
     name: string;
     category: string;
     price: number;
+    bestseller: boolean;
   }>;
-  onDelete: (id: string) => void;
   isLoading: boolean;
+  refetch: () => void;
 }
 
 export function AdminProductTable({
   items,
-  onDelete,
   isLoading,
+  refetch,
 }: AdminProductTableProps) {
+  const deleteProduct = api.products.delete.useMutation({
+    onSuccess: () => refetch(),
+  });
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Price</TableHead>
+          <TableHead className="hidden sm:table-cell">Category</TableHead>
+          <TableHead className="hidden sm:table-cell">Price</TableHead>
+          <TableHead>Bestseller</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -42,10 +49,10 @@ export function AdminProductTable({
                 <TableCell>
                   <Skeleton className="h-4 w-32" />
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <Skeleton className="h-4 w-24" />
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <Skeleton className="h-4 w-16" />
                 </TableCell>
                 <TableCell>
@@ -56,12 +63,23 @@ export function AdminProductTable({
           : items.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>{product.price}</TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  {product.category}
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  {product.price}
+                </TableCell>
+                <TableCell>
+                  <BestsellerSwitch
+                    initialChecked={product.bestseller}
+                    productId={product.id}
+                  />
+                </TableCell>
                 <TableCell className="flex gap-2">
                   <Button
                     variant="destructive"
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => deleteProduct.mutate(product.id)}
+                    disabled={isLoading}
                   >
                     Delete
                   </Button>

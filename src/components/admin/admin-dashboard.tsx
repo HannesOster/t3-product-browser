@@ -5,7 +5,6 @@ import { api } from "~/trpc/react";
 import useQueryFilter from "~/lib/use-query-filter";
 import { AdminProductTable } from "./admin-product-table";
 import { AdminProductForm } from "./admin-product-form";
-import { Suspense } from "react";
 
 export default function AdminDashboard() {
   const [filters] = useQueryFilter();
@@ -20,9 +19,7 @@ export default function AdminDashboard() {
       page,
       pageSize: 12,
     });
-  const deleteProduct = api.products.delete.useMutation({
-    onSuccess: () => refetch(),
-  });
+
   const createProduct = api.products.create.useMutation({
     onSuccess: () => refetch(),
   });
@@ -31,11 +28,8 @@ export default function AdminDashboard() {
 
   return (
     <div className="mx-auto max-w-5xl py-8">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Admin-Bereich</h1>
-        <span className="bg-primary text-primary-foreground rounded px-3 py-1 text-sm shadow">
-          Produkte verwalten
-        </span>
       </div>
 
       <div className="mb-8 grid gap-6 md:grid-cols-2">
@@ -60,23 +54,17 @@ export default function AdminDashboard() {
           <ProductFilterBar admin />
         </div>
       </div>
-
-      <div className="bg-card rounded-lg border p-6 shadow">
-        <h2 className="mb-4 text-xl font-semibold">Produktliste</h2>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AdminProductTable
-            isLoading={isLoading || isFetching}
-            items={data?.items ?? []}
-            onDelete={(id) => deleteProduct.mutate(id)}
-          />
-        </Suspense>
-        <div className="mt-6 flex justify-center">
-          <PaginationControls
-            page={filters.page}
-            totalPages={data?.pageCount}
-            isLoading={isLoading || isFetching}
-          />
-        </div>
+      <AdminProductTable
+        isLoading={isLoading || isFetching}
+        items={data?.items ?? []}
+        refetch={refetch}
+      />
+      <div className="mt-6 flex justify-center">
+        <PaginationControls
+          page={filters.page}
+          totalPages={data?.pageCount}
+          isLoading={isLoading || isFetching}
+        />
       </div>
     </div>
   );
