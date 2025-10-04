@@ -7,6 +7,47 @@ const t = initTRPC.create();
 const prisma = new PrismaClient();
 
 export const productsRouter = t.router({
+  toggleBestseller: t.procedure
+    .input(z.object({ id: z.string(), value: z.boolean() }))
+    .mutation(async ({ input }) => {
+      const product = await prisma.product.update({
+        where: { id: input.id },
+        data: { bestseller: input.value },
+      });
+      return product;
+    }),
+
+  edit: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().min(1).optional(),
+        description: z.string().optional(),
+        price: z.number().optional(),
+        categoryId: z.string().optional(),
+        imageUrl: z.string().optional(),
+        quantityIncrement: z.number().optional(),
+        bestseller: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id, ...data } = input;
+      const product = await prisma.product.update({
+        where: { id },
+        data,
+      });
+      return product;
+    }),
+  getBestsellers: t.procedure.query(async () => {
+    const items = await prisma.product.findMany({
+      where: { bestseller: true },
+      include: { category: true },
+    });
+    return items.map((item) => ({
+      ...item,
+      category: item.category?.name,
+    }));
+  }),
   getList: t.procedure
     .input(
       z.object({

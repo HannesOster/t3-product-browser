@@ -25,5 +25,6 @@ model Product {
   quantityIncrement Int
   imageUrl         String
   categoryId       String
+  bestseller       Boolean @default(false)
   category         Category @relation(fields: [categoryId], references: [id])
 }
