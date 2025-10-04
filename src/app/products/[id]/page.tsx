@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useCart } from "~/lib/cart-store";
 import { ChevronLeft } from "lucide-react";
 import { api, type RouterOutputs } from "~/trpc/react";
+import { Spinner } from "~/components/ui/shadcn-io/spinner";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -30,13 +31,8 @@ export default function ProductDetailPage() {
       s.add,
   );
 
-  // Produkt laden oder Fehler
   if (isLoading) {
-    return (
-      <div className="text-muted-foreground py-12 text-center">
-        Lade Produkt...
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!product || error) {

@@ -11,17 +11,15 @@ import {
 } from "./ui/carousel";
 import type { Product } from "@prisma/client";
 import { api } from "~/trpc/react";
+import { Spinner } from "./ui/shadcn-io/spinner";
 
 export function BestsellerSlider() {
-  const { data, isLoading } = api.products.getList.useQuery({
-    page: 1,
-    pageSize: 12,
-  });
+  const { data, isLoading } = api.products.getBestsellers.useQuery();
   if (isLoading) {
-    return <div className="py-8 text-center">Lädt...</div>;
+    return <Spinner />;
   }
 
-  const products = data?.items ?? [];
+  const products = data ?? [];
   return (
     <section className="z-10 w-full max-w-3xl px-4 py-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Unsere Bestseller</h2>
