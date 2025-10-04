@@ -5,6 +5,7 @@ import { api } from "~/trpc/react";
 import useQueryFilter from "~/lib/use-query-filter";
 import { AdminProductTable } from "./admin-product-table";
 import { AdminProductForm } from "./admin-product-form";
+import { Suspense } from "react";
 
 export default function AdminDashboard() {
   const [filters] = useQueryFilter();
@@ -62,11 +63,13 @@ export default function AdminDashboard() {
 
       <div className="bg-card rounded-lg border p-6 shadow">
         <h2 className="mb-4 text-xl font-semibold">Produktliste</h2>
-        <AdminProductTable
-          isLoading={isLoading || isFetching}
-          items={data?.items ?? []}
-          onDelete={(id) => deleteProduct.mutate(id)}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AdminProductTable
+            isLoading={isLoading || isFetching}
+            items={data?.items ?? []}
+            onDelete={(id) => deleteProduct.mutate(id)}
+          />
+        </Suspense>
         <div className="mt-6 flex justify-center">
           <PaginationControls
             page={filters.page}
