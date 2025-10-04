@@ -28,7 +28,7 @@ export function BestsellerSlider() {
           {products.map((product: Product) => (
             <CarouselItem
               key={product.id}
-              className="basis-1/2 md:basis-1/3 lg:basis-1/4"
+              className="flex basis-1/2 flex-col items-center justify-between md:basis-1/3 lg:basis-1/4"
             >
               <Image
                 src={product.imageUrl}
@@ -37,13 +37,17 @@ export function BestsellerSlider() {
                 height={140}
                 className="mb-2 h-32 w-full rounded object-cover"
               />
-              <div className="mb-1 text-center text-lg font-semibold">
+              <div className="mb-1 line-clamp-2 flex h-12 items-center justify-center text-center text-lg font-semibold">
                 {product.name}
               </div>
               <div className="text-primary mb-2 text-center font-bold">
                 {product.price.toFixed(2)} €
               </div>
-              <Button size="sm" asChild>
+              <Button
+                size="sm"
+                asChild
+                className="mt-auto w-full max-w-[140px]"
+              >
                 <Link href={`/products/${product.id}`}>Zum Produkt</Link>
               </Button>
             </CarouselItem>
