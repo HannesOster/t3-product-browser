@@ -46,11 +46,11 @@ export function ProductList() {
           )}
         </div>
       </div>
-      {isLoading ? (
-        <Skeleton className="mt-2 h-4 w-[500px]" />
-      ) : (
-        <PaginationControls page={page} totalPages={data?.pageCount} />
-      )}
+      <PaginationControls
+        page={page}
+        isLoading={isLoading}
+        totalPages={data?.pageCount}
+      />
     </>
   );
 }
