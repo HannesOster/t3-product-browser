@@ -14,6 +14,7 @@ type PaginationControlsProps = {
   page: number;
   totalPages: number | undefined;
   windowSize?: number;
+  isLoading?: boolean;
 };
 
 import { useState, useEffect } from "react";
@@ -22,6 +23,7 @@ export function PaginationControls({
   page,
   totalPages,
   windowSize = 10,
+  isLoading,
 }: PaginationControlsProps) {
   const [activePage, setActivePage] = useState(page);
   useEffect(() => {
@@ -49,19 +51,25 @@ export function PaginationControls({
           />
         </PaginationItem>
 
-        {Array.from({ length: end - adjustedStart + 1 }, (_, i) => {
-          const pageNum = adjustedStart + i;
-          return (
-            <PaginationItem key={pageNum}>
-              <PaginationLink
-                isActive={page === pageNum}
-                onClick={() => handlePageChange(pageNum)}
-              >
-                {pageNum}
-              </PaginationLink>
-            </PaginationItem>
-          );
-        })}
+        {isLoading
+          ? Array.from({ length: 10 }, (_, i) => (
+              <PaginationItem key={i}>
+                <div className="mx-auto h-9 w-9 animate-pulse rounded bg-gray-200" />
+              </PaginationItem>
+            ))
+          : Array.from({ length: end - adjustedStart + 1 }, (_, i) => {
+              const pageNum = adjustedStart + i;
+              return (
+                <PaginationItem key={pageNum}>
+                  <PaginationLink
+                    isActive={page === pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                  >
+                    {pageNum}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
 
         <PaginationItem>
           <PaginationNext

@@ -11,13 +11,14 @@ export default function AdminDashboard() {
 
   const { search, category, sort, page } = filters;
 
-  const { data, refetch } = api.products.getList.useQuery({
-    search,
-    category: category === "Keine Kategorie" ? undefined : category,
-    sort: sort === "price-asc" || sort === "price-desc" ? sort : undefined,
-    page,
-    pageSize: 12,
-  });
+  const { data, refetch, isLoading, isFetching } =
+    api.products.getList.useQuery({
+      search,
+      category: category === "Keine Kategorie" ? undefined : category,
+      sort: sort === "price-asc" || sort === "price-desc" ? sort : undefined,
+      page,
+      pageSize: 12,
+    });
   const deleteProduct = api.products.delete.useMutation({
     onSuccess: () => refetch(),
   });
@@ -25,7 +26,6 @@ export default function AdminDashboard() {
     onSuccess: () => refetch(),
   });
 
-  // Load categories for select
   const { data: categories } = api.products.getCategories.useQuery();
 
   return (
@@ -63,6 +63,7 @@ export default function AdminDashboard() {
       <div className="bg-card rounded-lg border p-6 shadow">
         <h2 className="mb-4 text-xl font-semibold">Produktliste</h2>
         <AdminProductTable
+          isLoading={isLoading || isFetching}
           items={data?.items ?? []}
           onDelete={(id) => deleteProduct.mutate(id)}
         />
@@ -70,6 +71,7 @@ export default function AdminDashboard() {
           <PaginationControls
             page={filters.page}
             totalPages={data?.pageCount}
+            isLoading={isLoading || isFetching}
           />
         </div>
       </div>
