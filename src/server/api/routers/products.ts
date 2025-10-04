@@ -7,16 +7,6 @@ const t = initTRPC.create();
 const prisma = new PrismaClient();
 
 export const productsRouter = t.router({
-  toggleBestseller: t.procedure
-    .input(z.object({ id: z.string(), value: z.boolean() }))
-    .mutation(async ({ input }) => {
-      const product = await prisma.product.update({
-        where: { id: input.id },
-        data: { bestseller: input.value },
-      });
-      return product;
-    }),
-
   edit: t.procedure
     .input(
       z.object({
